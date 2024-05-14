@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Grid } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "lucide-react";
