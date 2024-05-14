@@ -151,28 +151,26 @@ function QueueGrid(props: QueueGridProps) {
   //end of LineProgress Customization
 
   return (
-    <Grid
-      sx={{
-        height: "auto",
-        padding: 1,
-        borderColor: heading[heading.length - 1] === "1" ? "#bf1733" : "black",
-        backgroundColor: heading[heading.length - 1] === "1" ? "#4d3636" : "#2e3942",
-      }}
+    <div
+    // sx={{
+    //   height: "auto",
+    //   padding: 1,
+    //   borderColor: heading[heading.length - 1] === "1" ? "#bf1733" : "black",
+    //   backgroundColor: heading[heading.length - 1] === "1" ? "#4d3636" : "#2e3942",
+    // }}
     >
       <h3>{heading}</h3>
       <p>Queue List:</p>
       <div className="subtask">
         {tasklist.map((task, index) => (
-          <Grid item xs={0} key={index}>
-            {task}
-          </Grid>
+          <div key={index}>{task}</div>
         ))}
       </div>
       <p>Duration</p>
       {/* <ThemeProvider theme={theme}>
         <BorderLinearProgress variant="determinate" color="primary" value={normalise(progress)} />
       </ThemeProvider> */}
-    </Grid>
+    </div>
   );
 }
 
