@@ -1,6 +1,6 @@
+import InfoModal from "@/components/modals/info-modal";
 import { BackButton } from "@/components/ui/back-button";
 import Balloon from "@/components/ui/balloon";
-import InfoButton from "@/components/ui/info-button";
 
 export default function Home() {
   const game = {
@@ -12,7 +12,7 @@ export default function Home() {
     <main>
       <div> Hello Heilum!</div>
       <BackButton />
-      <InfoButton gameDetails={game} />
+      <InfoModal gameDetails={game} />
       <Balloon />
     </main>
   );
