@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Grid } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import "./mgmt.css";
 
 function Balloon() {
   document.body.style.backgroundColor = "#1f2830";
