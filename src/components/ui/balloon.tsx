@@ -3,8 +3,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function Balloon() {
-  document.body.style.backgroundColor = "#1f2830";
-
   const [isTasksOpen, setIsTasksOpen] = useState(false);
   const [taskList, setTaskList] = useState<JSX.Element[]>([]);
   const [oneList, setoneList] = useState<JSX.Element[]>([]);
