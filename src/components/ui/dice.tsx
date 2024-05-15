@@ -82,7 +82,7 @@ function Dice() {
     return () => {
       clearInterval(timer);
     };
-  }, [isRolling, colorMap, colors.length, speed]);
+  }, [isRolling, colorMap, colors.length, speed, factor]);
 
   const onShowAll = () => {
     setIsShown(!isShown);
