@@ -66,7 +66,7 @@ function Balloon() {
         {isTasksOpen ? <ChevronLeft size={18} onClick={onOpenTasks} /> : <ChevronRight size={18} />}
       </div>
 
-      <div className="flex flex-col p-3 gap-2">
+      {/* <div className="flex flex-col p-3 gap-2">
         <div>
           <QueueGrid heading="High Priority Queue 1" tasklist={oneList} setTaskList={setoneList} />
         </div>
@@ -79,7 +79,7 @@ function Balloon() {
         <div>
           <QueueGrid heading="Regular Queue 4" tasklist={fourList} setTaskList={setfourList} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
