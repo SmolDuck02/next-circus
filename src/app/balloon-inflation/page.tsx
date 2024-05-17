@@ -13,9 +13,10 @@ export default function BalloonInflation() {
   return (
     <main>
       <div> Hello Heilum!</div>
-      <BackButton />
       <InfoModal gameDetails={game} />
+
       <Balloon />
+      <BackButton />
     </main>
   );
 }
