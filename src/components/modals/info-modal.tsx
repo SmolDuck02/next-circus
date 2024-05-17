@@ -6,6 +6,7 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -19,29 +20,31 @@ type GameDetails = {
 
 export default function InfoModal({ gameDetails }: { gameDetails: GameDetails }) {
   return (
-    <>
-      <Dialog>
-        <DialogTrigger asChild>
-          <InfoIcon className="absolute right-8 top-24 cursor-pointer" size={25}></InfoIcon>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Game Info</DialogTitle>
-            <DialogDescription>This is description</DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <h1 className="text-right">{gameDetails.name}</h1>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <p className="text-right">{gameDetails.description}</p>
-            </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <InfoIcon className="absolute right-8 top-24 cursor-pointer" size={25}></InfoIcon>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Game Info</DialogTitle>
+          <DialogDescription>This is description</DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <h1 className="text-right">{gameDetails.name}</h1>
           </div>
-          <DialogClose>
-            <Button>Close</Button>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <p className="text-right">{gameDetails.description}</p>
+          </div>
+        </div>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
           </DialogClose>
-        </DialogContent>
-      </Dialog>
-    </>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

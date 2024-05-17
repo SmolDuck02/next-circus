@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -53,17 +53,30 @@ function Balloon() {
   return (
     <div>
       {/* part 2 */}
-      <Button
-        className="absolute bottom-7 left-1/2 transform translate-x-1/2"
+      <div
+        className="fixed cursor-pointer bottom-[15vh] rounded-full h-10 w-10 bg-red right-1/2 transform translate-x-1/2"
         onClick={onInflateBalloon}
       />
 
       {/* part 1 */}
-      <div className="absolute right-7 top-1/2 transform translate-y-1/2">
-        {isTasksOpen ? <ChevronLeft size={18} onClick={onOpenTasks} /> : <ChevronRight size={18} />}
-      </div>
 
-      {/* <div className="flex flex-col p-3 gap-2">
+      <div
+        className={clsx(
+          "fixed cursor-pointer duration-200 ease-out transition-all bottom-1/2 transform translate-y-1/2",
+          isTasksOpen ? "right-64" : "right-8"
+        )}
+        onClick={() => {
+          setIsTasksOpen(!isTasksOpen);
+        }}
+      >
+        {isTasksOpen ? <ChevronRight size={18} onClick={onOpenTasks} /> : <ChevronLeft size={18} />}
+      </div>
+      <div
+        className={clsx(
+          "absolute rounded bottom-1/2 duration-200 translate-all ease-out transform translate-y-1/2 right-0 flex flex-col p-3 gap-2 bg-slate-500 h-84 w-[15%]",
+          isTasksOpen ? "translate-x-[-1rem]" : "translate-x-full"
+        )}
+      >
         <div>
           <QueueGrid heading="High Priority Queue 1" tasklist={oneList} setTaskList={setoneList} />
         </div>
@@ -76,7 +89,7 @@ function Balloon() {
         <div>
           <QueueGrid heading="Regular Queue 4" tasklist={fourList} setTaskList={setfourList} />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
