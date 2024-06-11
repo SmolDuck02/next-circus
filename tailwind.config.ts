@@ -19,15 +19,6 @@ const config = {
     },
     extend: {
       colors: {
-        red: "#FF0000",
-        orange: "#FFA500",
-        yellow: "#FFFF00",
-        green: "#90EE90",
-        teal: "#00A36C",
-        blue: "#ADD8E6",
-        indigo: "#0000FF",
-        purple: "#7F00FF",
-        pink: "#800080",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -76,10 +67,21 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        spinOnce: {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
+        pop: {
+          "0%": { transform: "scale(1)" }, // Start at original size
+          "40%": { transform: "scale(1.2)" }, // Scale up to 120%
+          "100%": { transform: "scale(1)" }, // Return to original size
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        spinOnce: "spinOnce 1s ease-in-out",
+        pop: "pop 0.2s ease-in-out",
       },
     },
   },

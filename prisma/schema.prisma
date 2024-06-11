@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  jobTitle  String
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Cow {
+  id    Int     @id @default(autoincrement())
+  name  String? @db.VarChar(255)
+  email String  @unique @db.VarChar(255)
+}
+
+
+model Note {
+  id        Int       @id @default(autoincrement())
+  author    String
+  title     String?
+  body      String?
+  isreply   Boolean   @default(false)
+  parentId  Int?
+  parent    Note?     @relation("NoteReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Note[]    @relation("NoteReplies")
+  timestamp DateTime? @default(now())
+}
+
+
+model Pet {
+  id        Int      @id @default(autoincrement())
+  name      String
+  owner     String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  breed     String
+}
