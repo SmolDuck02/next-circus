@@ -1,50 +1,70 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { InfoIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
 
-type GameDetails = {
+interface GameDetail {
   name: string;
   description: string;
+}
+
+type GameKey = "/" | "/balloon-inflation" | "/rock-singers" | "/freedom-wall" | "/about";
+
+type Game = Partial<{
+  [key in GameKey]: GameDetail;
+}>;
+
+const gameDetails: Game = {
+  "/": {
+    name: "🎲 Dice",
+    description: "It's Discor Time!",
+  },
+  "/balloon-inflation": {
+    name: "Balloon Inflation",
+    description: "This propject is about handling tasks with time",
+  },
+  "/rock-singers": {
+    name: "Rock Singers",
+    description: "This propject is about handling tasks with time",
+  },
+  "/freedom-wall": {
+    name: "Wallin",
+    description: "This propject is about handling tasks with time",
+  },
 };
 
-export default function InfoModal({ gameDetails }: { gameDetails: GameDetails }) {
+export default function InfoModal() {
+  const pathname = usePathname() as GameKey;
+  console.log(pathname);
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <InfoIcon className="absolute right-8 top-24 cursor-pointer" size={25}></InfoIcon>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Game Info</DialogTitle>
-          <DialogDescription>This is description</DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <h1 className="text-right">{gameDetails.name}</h1>
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <p className="text-right">{gameDetails.description}</p>
-          </div>
-        </div>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
+      {pathname != "/about" && (
+        <>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              className="fixed h-8 w-8 text-lg right-[1.8rem] opacity-70  top-32 cursor-pointer rounded-full"
+            >
+              i
             </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
+            {/* <InfoIcon className="absolute right-9 top-32 cursor-pointer" size={25}></InfoIcon> */}
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>{gameDetails[pathname]?.name}</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>{gameDetails[pathname]?.description}</DialogDescription>
+          </DialogContent>
+        </>
+      )}
     </Dialog>
   );
 }

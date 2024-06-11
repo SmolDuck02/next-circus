@@ -1,80 +1,122 @@
 "use client";
 
-import { User } from "@/lib/schema";
-import { LogOut, UserRound } from "lucide-react";
-import { useState } from "react";
 // import { logout } from "~/lib/actions/auth";
 
 // import { User } from "~/lib/schema";
 
-import { Button } from "@/components/ui/button";
-import LoginModal from "../modals/login-modal";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+} from "@/components/ui/sheet";
+import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
+import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Button } from "./button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
+import { Label } from "./label";
 
-export default function Account({ user }: { user: User | null }) {
-  const [isShowMenu, setIsShowMenu] = useState(false);
-  const handleAccountClick = () => {
-    setIsShowMenu(!isShowMenu);
-  };
+interface Loading {
+  state: boolean;
+  message: string;
+}
+export default function Account() {
+  const handleViewProfile = () => {};
+  const [userr, setUserr] = useState<UserProfile>();
+  const [isMounted, setIsMounted] = useState(true);
+  const [isLoading2, setIsLoading2] = useState(false);
+  const [isSheet, setIsSheet] = useState(false);
+  const { user, error, isLoading } = useUser();
+
+  if (error) console.log(error.message);
+
+  useEffect(() => {
+    setIsMounted(false);
+  }, []);
+
   return (
     <>
-      <div className="absolute right-7 top-7 ">
-        {user ? (
-          <div
-            onClick={() => handleAccountClick()}
-            className="z-50 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-yellow-400 bg-red-900 text-sm font-normal text-white"
-          >
-            {user.firstName[0] || "G"}
-          </div>
-        ) : (
-          <Button
-            onClick={() => {
-              const modal = document.getElementById("login_modal");
-              if (modal instanceof HTMLDialogElement) modal.showModal();
-            }}
-            variant="secondary"
-          >
-            Login
+      {!isMounted &&
+        (isLoading2 ? (
+          <Button disabled>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin " />
+            Please wait
           </Button>
-        )}
-      </div>
-      {isShowMenu && <AccountMenu user={user} />}
-      <LoginModal />
+        ) : user?.name ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              {/* <div className="z-50 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full  bg-red-900 text-sm font-normal text-white">
+                {user?.name[0]}
+              </div> */}
+              <img
+                src={user.picture || ""}
+                alt={"user"}
+                className="z-50 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full"
+              ></img>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel className="text-base">{user.name}</DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => setIsSheet(true)}>Profile</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/api/auth/logout" onClick={() => setIsLoading2(true)}>
+                  Log Out
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          !isLoading && (
+            <Link href="/api/auth/login" onClick={() => setIsLoading2(true)}>
+              <Button variant={"secondary"}>Login</Button>
+            </Link>
+          )
+        ))}
+
+      <Sheet open={isSheet} onOpenChange={() => setIsSheet(false)}>
+        <SheetContent className="w-80 flex flex-col justify-between">
+          <SheetHeader>
+            <SheetDescription>Profile Information</SheetDescription>
+
+            <div className="w-full  h-56 flex flex-col items-center justify-center gap-3">
+              <Image
+                src={user && user.picture ? user.picture.toString() : ""}
+                alt="User Pic"
+                width={100}
+                height={100}
+                className="rounded-full"
+              />
+              <div className="text-lg">{user ? user.nickname : "Anonii"}</div>
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground" htmlFor="firstname">
+                Name
+              </Label>
+              <p>{user ? user.name : "Guest"}</p>
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground" htmlFor="firstname">
+                Email
+              </Label>
+              <p>{user ? user.email : "guest@guest.com"}</p>
+            </div>
+          </SheetHeader>
+          <SheetFooter>
+            <Button className="w-full" variant="destructive">
+              Delete account
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
     </>
-  );
-}
-
-function AccountMenu({ user }: { user: User | null }) {
-  const menuItems = [
-    { id: 1, name: user?.email || "Guest", icon: UserRound },
-    { id: 2, name: user ? "Logout" : "Login", icon: LogOut },
-  ];
-  return (
-    <div className="absolute right-7 top-16 z-50 flex h-auto w-48 flex-col rounded bg-white p-2 text-sm">
-      <span className="m-2 text-base">
-        {user?.firstName} {user?.lastName}{" "}
-      </span>
-      {menuItems.map((item, index) => (
-        <div
-          key={item.id}
-          className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-gray-100"
-          onClick={async () => {
-            if (item.id === 2) {
-              if (user) {
-                // await logout();
-              } else {
-                const loginModal = document.getElementById("login_modal");
-                if (loginModal instanceof HTMLDialogElement) {
-                  loginModal.showModal();
-                }
-              }
-            }
-          }}
-        >
-          <item.icon size={15} />
-
-          {item.name}
-        </div>
-      ))}
-    </div>
   );
 }

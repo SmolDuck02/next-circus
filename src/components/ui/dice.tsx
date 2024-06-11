@@ -1,47 +1,51 @@
 "use client";
-import { Eye, EyeOff, Heart, Pause, Play } from "lucide-react";
+import { libreBaskerville } from "@/styles/fonts";
+import { Eye, EyeOff, Pause, Play, RotateCcw } from "lucide-react";
 import Link from "next/link";
 // import { darken, lighten } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 function Dice() {
   const colorMap = useMemo(
     () => [
-      "#64dfdf",
-      "#b5179e",
-      "#f72585",
-      "#ffd766",
-      "#9046cf",
-      "#ff6700",
-      "#4cb944",
-      "#ff6685",
-      "#5bc0eb",
+      "bg-[#dc2626]",
+      "bg-[#f97316]",
+      "bg-[#eab308]",
+      "bg-[#22c55e]",
+      "bg-[#14b8a6]",
+      "bg-[#2563eb]",
+      "bg-[#4f46e5]",
+      "bg-[#9333ea]",
+      "bg-[#c026d3]",
+    ],
+    []
+  );
+
+  const shadowMap = useMemo(
+    () => [
+      "shadow-[#dc2626]",
+      "shadow-[#f97316]",
+      "shadow-[#eab308]",
+      "shadow-[#22c55e]",
+      "shadow-[#14b8a6]",
+      "shadow-[#2563eb]",
+      "shadow-[#4f46e5]",
+      "shadow-[#9333ea]",
+      "shadow-[#c026d3]",
     ],
     []
   );
 
   const items = [
-    { icon: <Heart size={18} />, href: "/balloon-inflation" },
-    { icon: <Heart size={18} /> },
-    { icon: <Heart size={18} /> },
-    { icon: <Heart size={18} /> },
-    { icon: <Heart size={18} /> },
-    { icon: <Heart size={18} />, href: "/freedom-wall" },
-    { icon: <Heart size={18} /> },
-    { icon: <Heart size={18} />, href: "/rock-singers" },
-    { icon: <Heart size={18} /> },
+    { icon: "🎊", href: "/balloon-inflation" },
+    { icon: "😚" },
+    { icon: "👀" },
+    { icon: "🚀" },
+    { icon: "🍨" },
+    { icon: "😶‍🌫️", href: "/freedom-wall" },
+    { icon: "😼" },
+    { icon: "🪇", href: "/rock-singers/1" },
+    { icon: "😳" },
   ];
-
-  // const colorMap = [
-  //   "red",
-  //   "orange-500",
-  //   "yellow-500",
-  //   "green",
-  //   "teal",
-  //   "blue",
-  //   "indigo",
-  //   "purple",
-  //   "pink",
-  // ];
 
   const [colorValues, setColorValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [colors, setColors] = useState(colorMap);
@@ -90,8 +94,10 @@ function Dice() {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center gap-2">
-      <div className="absolute top-5 left-5 text-xl">{number}</div>
-      <div className="flex gap-3 ">
+      <div className={`fixed left-0  top-0 m-8 text-xl ${libreBaskerville.className}`}>
+        {number}
+      </div>
+      <div className="flex gap-3 fixed top-40 ">
         {isRolling ? (
           <Pause size={15} className=" cursor-pointer" onClick={onRoll} />
         ) : (
@@ -102,25 +108,38 @@ function Dice() {
         ) : (
           <EyeOff size={15} className=" cursor-pointer" onClick={onShowAll} />
         )}
+        <RotateCcw
+          size={15}
+          className="cursor-pointer"
+          onClick={() => {
+            setColorValues([0]);
+          }}
+        />
       </div>
-      <div className=" h-1/2 grid grid-cols-3 grid-rows-3 gap-3">
-        {!isShown
-          ? colors.map((color, index) => (
+      {/* bg-[#142650] */}
+      {/* shadow-[0_0_2px_0.6px] shadow-[#4287f5] */}
+      <div className="fixed top-1/2 transform -translate-y-1/2 h-1/2 grid grid-cols-3 grid-rows-3 gap-3">
+        {items.map((item, index) => (
+          <div
+            key={index}
+            className={`aspect-square  group rounded-lg  bg-[#0b152c] flex justify-center items-center `}
+          >
+            <div className="w-7 h-7 fixed  bg-sky-500  blur-2xl"></div>
+            <div
+              className={`${colorMap[index]} z-10 shadow-[0_0_90px] rounded ${
+                isRolling ? "group-hover:hidden" : "group-hover:flex"
+              }  ${shadowMap[index]}   ${
+                isShown || colorValues[index] ? "flex" : "hidden"
+              }  justify-center items-center w-full h-full`}
+            >
               <div
-                key={index}
-                className={`aspect-square rounded  hover:bg-cyan-600 hover:brightness-100 ${
-                  colorValues[index] ? `bg-[#36b3e9] brightness-110` : " bg-cyan-500 brightness-50"
-                } `}
-              />
-            ))
-          : items.map((item, index) => (
-              <div
-                key={index}
-                className={`aspect-square flex justify-center items-center rounded bg-slate-600 hover:bg-cyan-600 hover:brightness-100`}
+                className={`w-[85%] h-[85%]  rounded flex  text-5xl [text-shadow:0px_0px_40px_rgb(66_135_245_/_90%)]   bg-[#0e1641]  justify-center items-center`}
               >
-                {item.href ? <Link href={item.href}>{item.icon}</Link> : item.icon}
+                {item.href ? <Link href={item.href}> {item.icon}</Link> : item.icon}
               </div>
-            ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
